@@ -33,6 +33,8 @@ export default function NotesClient({ initSearch, initPage, initData }: NotesCli
         queryKey: ["notes", queryDebounced, page],
         queryFn: () => fetchNotes(queryDebounced, page, 12),
         placeholderData: keepPreviousData,
+        initialData:
+            page === initPage && queryDebounced === initSearch ? initData : null,
     });
 
     useEffect(() => {
