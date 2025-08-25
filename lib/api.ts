@@ -10,14 +10,14 @@ export interface FetchNotesResponse {
     totalPages: number;
 }
 
-axios.defaults.baseURL = "https://notehub-public.goit.study/api/notes/";
+// axios.defaults.baseURL = "https://notehub-public.goit.study/api/notes/";
 axios.defaults.headers.common["Authorization"] = `Bearer ${ApiKey}`;
 const url = "https://notehub-public.goit.study/api/notes/";
 
 export async function fetchNotes(
     search: string,
     page: number,
-    perPage: number
+    perPage?: number
 ): Promise<FetchNotesResponse> {
     const res = await axios.get<FetchNotesResponse>(url, {
         params: {
@@ -34,9 +34,9 @@ export async function createNote(formData: NoteFormValues): Promise<Note> {
 }
 
 export async function deleteNote(noteId: string): Promise<Note> {
-    return (await axios.delete<Note>(url + `${noteId}`)).data;
+    return (await axios.delete<Note>(`${url}${noteId}`)).data;
 }
 
 export async function getSingleNote(noteId: string): Promise<Note> {
-    return (await axios.get<Note>(url + `${noteId}`)).data;
+    return (await axios.get<Note>(`${url}${noteId}`)).data;
 }

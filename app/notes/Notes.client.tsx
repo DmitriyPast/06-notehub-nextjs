@@ -19,7 +19,6 @@ interface NotesClientProps {
 }
 
 export default function NotesClient({ initSearch, initPage }: NotesClientProps) {
-    // const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
     const [page, setPage] = useState<number>(initPage);
     const [query, setQuery] = useState<string>(initSearch);
     const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -37,6 +36,8 @@ export default function NotesClient({ initSearch, initPage }: NotesClientProps) 
             toast("No notes found for your request.")
         else firstUpdate.current = false;
     }, [data, isSuccess]);
+
+    useEffect(() => setPage(1), [queryDebounced])
 
     const handleClose = () => setModalOpen(false);
 
