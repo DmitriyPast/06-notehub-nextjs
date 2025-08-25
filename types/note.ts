@@ -17,7 +17,3 @@ export interface NoteFormValues {
   tag: NoteTag;
 }
 
-export interface FetchNotesResponse {
-  notes: Note[];
-  totalPages: number;
-}

@@ -1,14 +1,14 @@
 import axios from "axios";
-import type { FetchNotesResponse, Note, NoteFormValues } from "../types/note";
+import type { Note, NoteFormValues } from "../types/note";
 
 // const myKey = import.meta.env.VITE_TMDB_TOKEN;
 const ApiKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 // console.log(myKey);
 
-// interface FetchNotesResponse {
-//     notes: Note[];
-//     totalPages: number;
-// }
+export interface FetchNotesResponse {
+    notes: Note[];
+    totalPages: number;
+}
 
 axios.defaults.baseURL = "https://notehub-public.goit.study/api/notes/";
 axios.defaults.headers.common["Authorization"] = `Bearer ${ApiKey}`;

@@ -1,27 +1,24 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import css from "./page.module.css";
-// import type { Movie } from "../../types/note";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchNotes } from "@/lib/api";
 import NoteList from "@/components/NoteList/NoteList";
 import Pagination from "@/components/Pagination/Pagination";
 import Modal from "@/components/Modal/Modal";
-// import SearchBar from "../SearchBox/SearchBox";
 import { useDebounce } from "use-debounce";
 import NoteForm from "@/components/NoteForm/NoteForm";
 import SearchBox from "@/components/SearchBox/SearchBox";
-import { FetchNotesResponse } from "@/types/note";
+import type { FetchNotesResponse } from "@/lib/api";
 
 interface NotesClientProps {
     initSearch: string,
     initPage: number,
-    initData: FetchNotesResponse
 }
 
-export default function NotesClient({ initSearch, initPage, initData }: NotesClientProps) {
+export default function NotesClient({ initSearch, initPage }: NotesClientProps) {
     // const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
     const [page, setPage] = useState<number>(initPage);
     const [query, setQuery] = useState<string>(initSearch);
@@ -33,13 +30,12 @@ export default function NotesClient({ initSearch, initPage, initData }: NotesCli
         queryKey: ["notes", queryDebounced, page],
         queryFn: () => fetchNotes(queryDebounced, page, 12),
         placeholderData: keepPreviousData,
-        initialData:
-            page === initPage && queryDebounced === initSearch ? initData : null,
     });
-
+    const firstUpdate = useRef(true);
     useEffect(() => {
-        if (isSuccess && !data?.notes.length)
-            toast("No notes found for your request.");
+        if (!firstUpdate.current && isSuccess && !data?.notes.length)
+            toast("No notes found for your request.")
+        else firstUpdate.current = false;
     }, [data, isSuccess]);
 
     const handleClose = () => setModalOpen(false);
